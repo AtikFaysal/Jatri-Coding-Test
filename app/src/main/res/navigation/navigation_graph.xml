@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/weatherListFragment"
         android:name="com.jatri.codingtest.ui.view.WeatherListFragment"
-        android:label="WeatherListFragment" />
+        android:label="WeatherListFragment" >
+        <action
+            android:id="@+id/action_weatherListFragment_to_weatherDetailsFragment"
+            app:destination="@id/weatherDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weatherDetailsFragment"
+        android:name="com.jatri.codingtest.ui.view.WeatherDetailsFragment"
+        android:label="WeatherDetailsFragment" />
 </navigation>

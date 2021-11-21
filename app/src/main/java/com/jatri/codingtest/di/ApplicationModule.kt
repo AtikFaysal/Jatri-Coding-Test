@@ -16,7 +16,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -24,35 +23,30 @@ import javax.inject.Singleton
 /**
  * @author Atik Faysal(Android Developer)
  * @Email mdatikfaysal@gmail.com
- * @Created 11/9/2021 at 1:45 PM
  */
 @Module
 @InstallIn(SingletonComponent::class)
 class ApplicationModule
 {
     @Provides
-    fun provideBaseUrl() = "https://5e510330f2c0d300147c034c.mockapi.io/"
+    fun provideBaseUrl() = "http://api.openweathermap.org/"
 
     @Provides
     @Singleton
     fun provideOkHttpClient(helper: NetworkHelper): OkHttpClient {
-        val interceptor: Interceptor = object : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-
-                if(!helper.isNetworkConnected())
-                {
-                    Log.d("noNetworkError","undable to connect internet")
-                }
-
-                val original: Request = chain.request()
-                val request: Request = original.newBuilder()
-                    .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .method(original.method, original.body)
-                    .build()
-
-                return chain.proceed(request)
+        val interceptor: Interceptor = Interceptor { chain ->
+            if(!helper.isNetworkConnected()) {
+                Log.d("noNetworkError","undable to connect internet")
             }
+
+            val original: Request = chain.request()
+            val request: Request = original.newBuilder()
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .method(original.method, original.body)
+                .build()
+
+            chain.proceed(request)
         }
 
         return OkHttpClient.Builder()
@@ -72,7 +66,6 @@ class ApplicationModule
 
         return Retrofit.Builder().baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(okHttpClient)
             .build()
     }

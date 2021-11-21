@@ -10,5 +10,5 @@ import retrofit2.Response
  */
 interface ApiHelper
 {
-    suspend fun getWeatherList(): Response<List<WeatherModel>>
+    suspend fun getWeatherList(): Response<WeatherModel>
 }

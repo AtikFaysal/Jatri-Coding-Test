@@ -23,7 +23,7 @@ interface SafeApiCall
                 when (throwable) {
                     is HttpException -> Resource.error( throwable.response()?.errorBody().toString(), null)
                     else -> {
-                        Log.d("noNetworkException", "No network exception")
+                        Log.d("noNetworkException", throwable.message.toString())
                         Resource.noNetworkException("Unable to connect internet, please retry.")
                     }
                 }

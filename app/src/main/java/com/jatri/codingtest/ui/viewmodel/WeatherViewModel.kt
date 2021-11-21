@@ -20,8 +20,8 @@ class WeatherViewModel @Inject constructor(
     private val  repository: WeatherRepository
     ) : ViewModel()
 {
-    private val _weatherList = MutableLiveData<Resource<List<WeatherModel>>>()
-    val weatherModelList : LiveData<Resource<List<WeatherModel>>>
+    private val _weatherList = MutableLiveData<Resource<WeatherModel>>()
+    val weatherModelList : LiveData<Resource<WeatherModel>>
         get() = _weatherList
 
     var isLoading = MutableLiveData(false)

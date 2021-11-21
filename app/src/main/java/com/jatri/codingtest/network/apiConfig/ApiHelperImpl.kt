@@ -11,5 +11,5 @@ import javax.inject.Inject
  */
 class ApiHelperImpl @Inject constructor(private val apiService : ApiServices) : ApiHelper
 {
-    override suspend fun getWeatherList(): Response<List<WeatherModel>> = apiService.getWeatherList()
+    override suspend fun getWeatherList(): Response<WeatherModel> = apiService.getWeatherList()
 }

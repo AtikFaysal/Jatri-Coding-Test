@@ -3,45 +3,43 @@ package com.jatri.codingtest.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.jatri.codingtest.R
-import com.jatri.codingtest.data.model.WeatherModel
+import com.jatri.codingtest.data.model.WeatherData
+import com.jatri.codingtest.ui.view.WeatherDetailsFragment.Companion.weatherInfo
 import kotlinx.android.synthetic.main.model_weather.view.*
 
 /**
  * @author Atik Faysal(Android Developer)
  * @Email mdatikfaysal@gmail.com
- * Created 11/9/2021 at 11:56 AM
  */
 class WeatherListAdapter(
-    private val users: ArrayList<WeatherModel>
+    private val items: ArrayList<WeatherData>
 ) : RecyclerView.Adapter<WeatherListAdapter.DataViewHolder>() {
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(user: WeatherModel) {
-            itemView.textViewUserName.text = user.name
-            itemView.textViewUserEmail.text = user.email
-            Glide.with(itemView.imageViewAvatar.context)
-                .load(user.avatar)
-                .into(itemView.imageViewAvatar)
+        fun bind(model: WeatherData) {
+            itemView.tv_city_name.text = model.name
+            itemView.tv_temperature.text = "${model.main.temp} \u2103"
+            itemView.tv_description.text = "Humidity: ${model.main.humidity}"
+
+            itemView.setOnClickListener {
+                weatherInfo = model
+                Navigation.createNavigateOnClickListener(R.id.action_weatherListFragment_to_weatherDetailsFragment).onClick(itemView)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        DataViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.model_weather, parent,
-                false
-            )
-        )
+        DataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.model_weather, parent, false))
 
-    override fun getItemCount(): Int = users.size
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) =
-        holder.bind(users[position])
+        holder.bind(items[position])
 
-    fun addData(list: List<WeatherModel>) {
-        users.addAll(list)
+    fun addData(list: List<WeatherData>) {
+        items.addAll(list)
     }
 }
